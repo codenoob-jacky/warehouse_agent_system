@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  warehouse-system:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OCR_MODE=online
+      - OCR_SPACE_API_KEY=helloworld
+      - KINGDEE_TYPE=excel
+    volumes:
+      - ./uploads:/app/uploads
+      - ./data:/app/data
+    restart: unless-stopped
+
+  # 可选：Redis缓存
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped

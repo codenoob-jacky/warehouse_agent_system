@@ -1,8 +1,126 @@
 # 智能仓管系统
 
-基于AI多代理架构的智能仓管系统，支持纸质单据OCR识别、自动数据验证和金蝶ERP系统集成。
+基于AI的智能仓管系统，支持纸质单据OCR识别、自动数据验证和金蝶ERP系统集成。
 
-## 🚀 核心功能
+## 🎯 版本说明
+
+### Ultra Simple 版本（推荐）
+- **文件**: `ultra_simple.py`
+- **特点**: 单文件，超轻量级（~20MB）
+- **功能**: 在线OCR + 本地金蝶数据库
+- **依赖**: 仅5个包，无重型库
+- **适用**: 中小企业，设备要求低
+
+### 打包版本
+- **目录**: `packaged_version/`
+- **特点**: 模块化，易维护
+- **功能**: 在线OCR + Excel导出
+- **适用**: 企业分发
+
+### 完整版本
+- **目录**: `full_version/`
+- **特点**: 功能完整，支持多代理
+- **功能**: 本地+在线OCR + 完整金蝶集成
+- **适用**: 开发测试，高级用户
+
+## 📁 项目结构
+
+```
+warehouse_agent_system/
+├── packaged_version/          # 🎯 打包版本（简化，用于分发）
+│   ├── config/               # 简化配置
+│   ├── utils/                # 核心工具
+│   ├── main.py              # 简化主程序
+│   ├── app_main.py          # 启动器
+│   ├── requirements.txt     # 最小依赖
+│   └── README.md           # 打包版说明
+├── full_version/             # 🔧 完整版本（开发使用）
+│   ├── config/              # 完整配置
+│   ├── utils/               # 完整工具集
+│   ├── agents/              # 多代理系统
+│   ├── tests/               # 测试文件
+│   ├── main.py             # 完整主程序
+│   ├── requirements.txt    # 完整依赖
+│   └── .env.example       # 完整配置模板
+├── scripts/                 # 🛠️ 构建和打包脚本
+│   ├── package_simple.bat  # 打包版专用打包脚本
+│   ├── 一键打包.bat         # 完整版打包脚本
+│   ├── 绿色版打包.bat       # 绿色版打包脚本
+│   └── 便携版打包.bat       # 便携版打包脚本
+├── docs_and_guides/         # 📚 文档和指南
+│   └── api_guide.py        # API获取指南
+├── Dockerfile              # Docker配置
+├── .gitignore             # Git忽略文件
+└── README.md              # 项目主说明
+```
+
+## 🚀 快速开始
+
+### 方案一：Ultra Simple版（推荐）
+```bash
+# 1. 直接运行
+python ultra_simple.py
+
+# 2. 或者打包成exe
+双击 build_ultra_simple.bat
+
+# 3. 分发给用户
+将 release_ultra\WarehouseSystem\ 整个文件夹给用户
+```
+
+### 方案二：打包版（企业分发）
+```bash
+# 1. 打包成exe
+cd scripts
+双击 package_simple.bat
+
+# 2. 分发给用户
+将 release\WarehouseSystem\ 整个文件夹给用户
+
+# 3. 用户使用
+双击 start.bat 即可运行
+```
+
+### 方案三：完整版（开发使用）
+```bash
+# 1. 进入完整版目录
+cd full_version
+
+# 2. 安装依赖
+pip install -r requirements.txt
+
+# 3. 配置环境
+cp .env.example .env
+# 编辑 .env 文件配置参数
+
+# 4. 运行系统
+python main.py
+```
+
+### 方案四：Docker部署
+```bash
+# 构建镜像
+docker build -t warehouse-system .
+
+# 运行容器
+docker run -p 8000:8000 warehouse-system
+```
+
+## 💡 版本对比
+
+| 功能 | Ultra Simple | 打包版 | 完整版 |
+|------|-------------|--------|--------|
+| **OCR识别** | ✅ 在线OCR | ✅ 在线OCR | ✅ 在线+本地OCR |
+| **数据导出** | ✅ 金蝶DB | ✅ Excel | ✅ Excel+金蝶API |
+| **多代理系统** | ❌ | ❌ | ✅ CrewAI多代理 |
+| **本地OCR** | ❌ | ❌ | ✅ PaddleOCR |
+| **金蝶集成** | ✅ 本地DB | ❌ | ✅ 完整集成 |
+| **文件大小** | 小(~20MB) | 小(~50MB) | 大(~200MB+) |
+| **依赖复杂度** | 极低(5个包) | 低(8个包) | 高(15+个包) |
+| **打包成功率** | 极高 | 高 | 中等 |
+| **适用场景** | 中小企业 | 企业分发 | 开发测试 |
+
+## 🎯 核心功能
 
 - **📸 智能OCR识别**: 支持拍照识别纸质入库单、出库单
 - **🤖 多代理协作**: OCR代理、验证代理、金蝶集成代理协同工作
@@ -11,173 +129,20 @@
 - **🌐 Web界面**: 简洁易用的Web操作界面
 - **📊 库存查询**: 实时查询商品库存信息
 
-### 💡 特别适配中小企业
+## 🌐 在线OCR vs 本地OCR
 
-- **本地金蝶支持**: 直接读写本地Access/SQL Server数据库
-- **无需联网**: 支持离线版金蝶系统
-- **Excel备选**: 无数据库时可导出Excel格式
-- **成本友好**: 适配盗版金蝶，降低企业成本
+### 在线OCR优势（推荐中小企业）
+- ✅ **零配置要求**：无需安装大型模型文件
+- ✅ **设备要求低**：任何能上网的电脑都能用
+- ✅ **识别精度高**：大厂算法持续优化
+- ✅ **成本更低**：免费额度通常够用
+- ✅ **维护简单**：无需更新模型
 
-## 🏗️ 系统架构
-
-```
-智能仓管系统
-├── 多代理系统
-│   ├── OCR识别代理 - 图片文字识别
-│   ├── 数据验证代理 - 数据质量检查
-│   ├── 金蝶集成代理 - ERP系统同步
-│   └── 协调代理 - 流程统筹管理
-├── OCR处理模块
-│   ├── PaddleOCR引擎 - 中文识别优化
-│   └── 智能解析器 - 结构化数据提取
-├── 金蝶集成模块
-│   ├── API接口封装
-│   ├── 单据创建功能
-│   └── 库存查询功能
-└── Web服务
-    ├── FastAPI后端
-    ├── 文件上传处理
-    └── 结果查询接口
-```
-
-## 📦 安装部署
-
-### 1. 环境要求
-
-- Python 3.8+
-- Redis (可选，用于缓存)
-- 金蝶ERP系统访问权限
-
-### 2. 安装依赖
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. 配置金蝶系统
-
-系统支持三种金蝶集成方式：
-
-#### 方式一：本地金蝶数据库（推荐）
-```env
-KINGDEE_TYPE=local
-KINGDEE_DB_TYPE=access
-KINGDEE_DB_PATH=C:\KDW\KDMAIN.MDB
-```
-
-#### 方式二：在线金蝶系统
-```env
-KINGDEE_TYPE=online
-KINGDEE_BASE_URL=http://your-server:8080
-KINGDEE_USERNAME=your-username
-KINGDEE_PASSWORD=your-password
-```
-
-#### 方式三：Excel导出（无数据库）
-```env
-KINGDEE_TYPE=excel
-KINGDEE_EXCEL_PATH=./kingdee_data.xlsx
-```
-
-**🔍 自动检测金蝶数据库：**
-```bash
-python utils/kingdee_detector.py
-```
-
-### 4. 启动服务
-
-```bash
-python main.py
-```
-
-访问 http://localhost:8000 使用Web界面
-
-## 🎯 使用方法
-
-### Web界面使用
-
-1. 打开浏览器访问 http://localhost:8000
-2. 点击"选择文件"上传单据图片
-3. 点击"开始处理"进行识别
-4. 查看处理结果和金蝶同步状态
-
-### API接口使用
-
-#### 上传单据处理
-```bash
-curl -X POST "http://localhost:8000/upload" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@your-document.jpg"
-```
-
-#### 查询处理结果
-```bash
-curl "http://localhost:8000/result/{task_id}"
-```
-
-#### 查询库存
-```bash
-curl "http://localhost:8000/api/inventory/{item_code}"
-```
-
-#### 手动录入单据
-```bash
-curl -X POST "http://localhost:8000/api/manual-entry" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "document_type": "inbound",
-    "basic_info": {
-      "document_number": "RK20240101001",
-      "date": "2024-01-01",
-      "supplier": "测试供应商"
-    },
-    "items": [
-      {
-        "item_code": "ITEM001",
-        "item_name": "测试商品",
-        "quantity": 10,
-        "unit_price": 100.0
-      }
-    ]
-  }'
-```
-
-## 🔧 配置说明
-
-### OCR配置
-- `OCR_USE_GPU`: 是否使用GPU加速（需要CUDA环境）
-- 支持中文识别，针对中文单据优化
-
-### 金蝶系统配置
-- 需要配置金蝶服务器地址、用户名、密码和数据库
-- **本地版金蝶**: 直接读写Access/SQL Server数据库文件
-- **在线版金蝶**: 通过API接口同步数据
-- **Excel模式**: 无数据库时导出Excel文件
-- 自动处理单据号、日期、供应商/客户、商品明细等信息
-
-### 代理系统配置
-- 可选择使用多代理系统或简化的单代理系统
-- 多代理系统提供更好的错误处理和流程控制
-- 单代理系统性能更高，适合简单场景
-
-## 📁 项目结构
-
-```
-warehouse_agent_system/
-├── agents/                 # 代理系统
-│   └── warehouse_agents.py # 多代理和单代理实现
-├── config/                 # 配置文件
-│   └── settings.py        # 系统配置
-├── utils/                  # 工具模块
-│   ├── ocr_processor.py   # OCR处理
-│   └── kingdee_integration.py # 金蝶集成
-├── data/                   # 数据存储
-├── tests/                  # 测试文件
-├── uploads/                # 上传文件目录
-├── main.py                # 主应用
-├── requirements.txt       # 依赖包
-└── README.md             # 说明文档
-```
+### 支持的在线OCR服务
+- **OCR.Space**（免费推荐）：每月25,000次免费
+- **百度OCR**：每月1,000次免费，付费便宜
+- **腾讯OCR**：每月1,000次免费
+- **Google Vision**：每月1,000次免费
 
 ## 🔍 支持的金蝶版本
 
@@ -191,39 +156,40 @@ warehouse_agent_system/
 - `C:\KDMAIN\*.MDB`
 - `C:\Program Files\Kingdee\*.MDB`
 
-### 数据库表结构
-- `ICStockBill`: 单据主表
-- `ICStockBillEntry`: 单据明细表
-- `t_ICItem`: 商品资料表
-- `t_Supplier`: 供应商表
-- `t_Organization`: 客户表
+## ⚙️ 系统要求
 
-### 入库单识别字段
-- 单据号、日期、供应商、仓库
-- 商品编码、商品名称、数量、单价、金额
-- 总金额、备注等
+### 打包版
+- Windows 7/8/10/11
+- 网络连接（用于在线OCR）
+- 2GB内存，100MB硬盘空间
 
-### 出库单识别字段
-- 单据号、日期、客户、仓库
-- 商品编码、商品名称、数量、单价、金额
-- 总金额、备注等
+### 完整版
+- Python 3.8+
+- Windows/Linux/macOS
+- 网络连接
+- 4GB内存，500MB硬盘空间
 
-## 🚨 注意事项
+## 🔧 常见问题
 
-1. **图片质量**: 确保单据图片清晰，光线充足
-2. **网络连接**: 需要稳定的网络连接访问金蝶系统
-3. **权限配置**: 确保金蝶用户有创建单据的权限
-4. **数据备份**: 建议定期备份处理结果和配置
-5. **安全性**: 生产环境请配置HTTPS和访问控制
+### 依赖冲突
+- 打包版：使用精简依赖，避免冲突
+- 完整版：修复了langchain版本冲突
 
-## 🔄 扩展功能
+### 编码问题
+- 使用英文文件名避免中文编码问题
+- 统一使用UTF-8编码
 
-- 支持更多ERP系统（SAP、用友等）
-- 增加更多单据类型（调拨单、盘点单等）
-- 添加数据分析和报表功能
-- 集成条码/二维码识别
-- 支持批量处理功能
+### 打包失败
+- 推荐使用打包版的简化方案
+- 避免复杂依赖导致的打包问题
 
 ## 📞 技术支持
 
-如有问题或建议，请提交Issue或联系开发团队。
+- 🐛 问题反馈：提交Issue
+- 📖 详细文档：查看各版本README
+- 🔧 API指南：docs_and_guides/api_guide.py
+- 💬 技术交流：欢迎讨论和建议
+
+## 📄 许可证
+
+本项目采用MIT许可证，详见LICENSE文件。

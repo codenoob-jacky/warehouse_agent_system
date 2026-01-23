@@ -39,6 +39,7 @@ venv.bak/
 
 # 上传文件
 uploads/
+*/uploads/
 *.jpg
 *.jpeg
 *.png
@@ -65,6 +66,7 @@ Thumbs.db
 *.tmp
 *.temp
 temp/
+temp_*
 
 # OCR模型文件
 *.pdmodel
@@ -79,3 +81,23 @@ htmlcov/
 *.zip
 *.tar.gz
 *.rar
+*.spec
+
+# 发布目录和打包输出
+release/
+*/release/
+release_*/
+output/
+*/output/
+
+# Excel文件
+*.xlsx
+kingdee_data.xlsx
+warehouse_data.xlsx
+
+# 数据目录
+data/
+*/data/
+
+# 可执行文件
+*.exe

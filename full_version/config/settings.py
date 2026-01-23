@@ -44,11 +44,28 @@ class Config:
     }
     
     # OCR配置
+    OCR_MODE = os.getenv("OCR_MODE", "online")  # local, online
     OCR_CONFIG = {
+        "mode": OCR_MODE,
         "use_gpu": os.getenv("OCR_USE_GPU", "False").lower() == "true",
-        "lang": "ch",  # 中文识别
-        "det_model_dir": None,
-        "rec_model_dir": None
+        "lang": "ch",
+        "use_angle_cls": True,
+        "use_space_char": True,
+        "drop_score": 0.5,
+        # 在线OCR配置
+        "online_ocr": {
+            "ocr_space": {
+                "enabled": True,
+                "api_key": os.getenv("OCR_SPACE_API_KEY", "helloworld"),
+                "timeout": 30
+            },
+            "baidu": {
+                "enabled": os.getenv("BAIDU_OCR_ENABLED", "False").lower() == "true",
+                "api_key": os.getenv("BAIDU_OCR_API_KEY", ""),
+                "secret_key": os.getenv("BAIDU_OCR_SECRET_KEY", ""),
+                "timeout": 30
+            }
+        }
     }
     
     # 文件上传配置
