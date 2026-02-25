@@ -1,201 +1,130 @@
-# 智能仓管系统
+# 智能仓管系统 - 金蝶云专业版
 
-基于AI的智能仓管系统，支持纸质单据OCR识别、自动数据验证和金蝶ERP系统集成。
+基于AI的智能仓管系统，专为**金蝶KIS云专业版 v7.0.0.9 / v16.0**定制开发。
 
-## 🎯 版本说明
+支持纸质单据OCR识别、自动解析并保存到金蝶云系统。
 
-### Ultra Simple 版本（推荐）
-- **Web版**: `ultra_simple.py` - 浏览器界面
-- **GUI版**: `ultra_simple_gui.py` - 桌面程序界面
-- **特点**: 单文件，超轻量级（GUI版~15MB，Web版~20MB）
-- **功能**: 在线OCR + 本地金蝶数据库
-- **依赖**: GUI版仅2个包，Web版5个包
-- **适用**: 中小企业，设备要求极低
+## 🎯 版本信息
 
-### 打包版本
-- **目录**: `packaged_version/`
-- **特点**: 模块化，易维护
-- **功能**: 在线OCR + Excel导出
-- **适用**: 企业分发
-
-### 完整版本
-- **目录**: `full_version/`
-- **特点**: 功能完整，支持多代理
-- **功能**: 本地+在线OCR + 完整金蝶集成
-- **适用**: 开发测试，高级用户
+- **金蝶版本**: KIS云专业版 v7.0.0.9 / v16.0
+- **应用平台**: v2.2.1
+- **集成方式**: WebAPI
+- **依赖**: 仅需 requests
 
 ## 📁 项目结构
 
 ```
 warehouse_agent_system/
-├── packaged_version/          # 🎯 打包版本（简化，用于分发）
-│   ├── config/               # 简化配置
-│   ├── utils/                # 核心工具
-│   ├── main.py              # 简化主程序
-│   ├── app_main.py          # 启动器
-│   ├── requirements.txt     # 最小依赖
-│   └── README.md           # 打包版说明
-├── full_version/             # 🔧 完整版本（开发使用）
-│   ├── config/              # 完整配置
-│   ├── utils/               # 完整工具集
-│   ├── agents/              # 多代理系统
-│   ├── tests/               # 测试文件
-│   ├── main.py             # 完整主程序
-│   ├── requirements.txt    # 完整依赖
-│   └── .env.example       # 完整配置模板
-├── scripts/                 # 🛠️ 构建和打包脚本
-│   ├── package_simple.bat  # 打包版专用打包脚本
-│   ├── 一键打包.bat         # 完整版打包脚本
-│   ├── 绿色版打包.bat       # 绿色版打包脚本
-│   └── 便携版打包.bat       # 便携版打包脚本
-├── docs_and_guides/         # 📚 文档和指南
-│   └── api_guide.py        # API获取指南
-├── Dockerfile              # Docker配置
-├── .gitignore             # Git忽略文件
-└── README.md              # 项目主说明
+├── kingdee_cloud_v7.py           # 金蝶云API核心模块
+├── kingdee_cloud_app.py          # GUI应用程序
+├── .env.kingdee_cloud            # 配置文件模板
+├── requirements_kingdee_cloud.txt # 依赖列表
+├── install_kingdee_cloud.bat     # 安装脚本
+├── start_kingdee_cloud.bat       # 启动脚本
+├── KINGDEE_CLOUD_README.md       # 详细文档
+├── docs_and_guides/              # 参考文档
+└── README.md                     # 本文件
 ```
 
 ## 🚀 快速开始
 
-### 方案一：Ultra Simple版（推荐）
+### 1. 安装依赖
 ```bash
-# GUI桌面版本（推荐）
-python ultra_simple_gui.py
+# 方式一：使用脚本（推荐）
+双击 install_kingdee_cloud.bat
 
-# Web浏览器版本
-python ultra_simple.py
-
-# 打包GUI版
-双击 build_gui.bat
-
-# 打包Web版
-双击 build_ultra_simple.bat
+# 方式二：手动安装
+pip install -r requirements_kingdee_cloud.txt
 ```
 
-### 方案二：打包版（企业分发）
-```bash
-# 1. 打包成exe
-cd scripts
-双击 package_simple.bat
-
-# 2. 分发给用户
-将 release\WarehouseSystem\ 整个文件夹给用户
-
-# 3. 用户使用
-双击 start.bat 即可运行
+### 2. 配置金蝶云
+编辑 `.env.kingdee_cloud` 文件，填入您的金蝶云信息：
+```ini
+KINGDEE_BASE_URL=http://your-server-ip/K3Cloud
+KINGDEE_ACCT_ID=your_account_id
+KINGDEE_USERNAME=your_username
+KINGDEE_PASSWORD=your_password
 ```
 
-### 方案三：完整版（开发使用）
+### 3. 启动程序
 ```bash
-# 1. 进入完整版目录
-cd full_version
+# 方式一：使用脚本（推荐）
+双击 start_kingdee_cloud.bat
 
-# 2. 安装依赖
-pip install -r requirements.txt
-
-# 3. 配置环境
-cp .env.example .env
-# 编辑 .env 文件配置参数
-
-# 4. 运行系统
-python main.py
+# 方式二：手动启动
+python kingdee_cloud_app.py
 ```
 
-### 方案四：Docker部署
-```bash
-# 构建镜像
-docker build -t warehouse-system .
+## 💡 核心优势
 
-# 运行容器
-docker run -p 8000:8000 warehouse-system
-```
-
-## 💡 版本对比
-
-| 功能 | Ultra Simple GUI | Ultra Simple Web | 打包版 | 完整版 |
-|------|-----------------|-----------------|--------|--------|
-| **界面类型** | 🖥️ 桌面GUI | 🌐 Web浏览器 | 🌐 Web浏览器 | 🌐 Web浏览器 |
-| **OCR识别** | ✅ 在线OCR | ✅ 在线OCR | ✅ 在线OCR | ✅ 在线+本地OCR |
-| **数据导出** | ✅ 金蝶DB | ✅ 金蝶DB | ✅ Excel | ✅ Excel+金蝶API |
-| **金蝶集成** | ✅ 本地DB | ✅ 本地DB | ❌ | ✅ 完整集成 |
-| **文件大小** | 极小(~15MB) | 小(~20MB) | 中(~50MB) | 大(~280MB) |
-| **依赖数量** | 极少(2个) | 少(5个) | 低(8个) | 高(15+个) |
-| **端口冲突** | ❌ 无 | ⚠️ 可能 | ⚠️ 可能 | ⚠️ 可能 |
-| **启动速度** | ⭐ 极快 | ⭐ 快 | ⭐ 快 | 🐌 较慢 |
-| **适用场景** | 中小企业首选 | 中小企业 | 企业分发 | 开发测试 |
-
-> **推荐**: GUI版本无需浏览器，无端口冲突，更像传统桌面软件
+- ✅ **极简依赖**: 仅需 requests 库
+- ✅ **云端集成**: 直连金蝶云，无需本地数据库
+- ✅ **OCR识别**: 支持OCR.Space、百度OCR等
+- ✅ **图形界面**: 简洁易用的桌面程序
+- ✅ **快速部署**: 5分钟完成配置
+- ✅ **专业定制**: 针对金蝶云v7.0/v16.0优化
 
 ## 🎯 核心功能
 
 - **📸 智能OCR识别**: 支持拍照识别纸质入库单、出库单
-- **🤖 多代理协作**: OCR代理、验证代理、金蝶集成代理协同工作
-- **🔗 多种金蝶集成**: 支持在线版、本地数据库版、Excel导出版
-- **✅ 数据验证**: 智能验证单据数据完整性和准确性
-- **🌐 Web界面**: 简洁易用的Web操作界面
-- **📊 库存查询**: 实时查询商品库存信息
+- **🔗 金蝶云集成**: 通过WebAPI直连金蝶云系统
+- **✅ 自动解析**: 智能提取单据号、日期、供应商等信息
+- **💾 自动保存**: 解析后自动保存到金蝶云
+- **🖥️ 图形界面**: 简洁易用的桌面操作界面
 
-## 🌐 在线OCR vs 本地OCR
+## 🌐 支持的OCR服务
 
-### 在线OCR优势（推荐中小企业）
-- ✅ **零配置要求**：无需安装大型模型文件
-- ✅ **设备要求低**：任何能上网的电脑都能用
-- ✅ **识别精度高**：大厂算法持续优化
-- ✅ **成本更低**：免费额度通常够用
-- ✅ **维护简单**：无需更新模型
-
-### 支持的在线OCR服务
 - **OCR.Space**（免费推荐）：每月25,000次免费
-- **百度OCR**：每月1,000次免费，付费便宜
+- **百度OCR**：每月1,000次免费
 - **腾讯OCR**：每月1,000次免费
-- **Google Vision**：每月1,000次免费
 
-## 🔍 支持的金蝶版本
+## 🔍 支持的单据类型
 
-### 本地数据库版本
-- **金蝶KIS**: Access数据库 (.MDB/.ACCDB)
-- **金蝶K3**: SQL Server数据库
-- **其他版本**: 可通过调整SQL语句适配
+### 入库单 (STK_InStock)
+- 单据类型编码: `RKD01`
+- 自动识别：单据号、日期、供应商、物料明细
 
-### 常见数据库路径
-- `C:\KDW\KDMAIN.MDB`
-- `C:\KDMAIN\*.MDB`
-- `C:\Program Files\Kingdee\*.MDB`
+### 出库单 (SAL_OUTSTOCK)
+- 单据类型编码: `CKD01`
+- 自动识别：单据号、日期、客户、物料明细
 
 ## ⚙️ 系统要求
 
-### 打包版
-- Windows 7/8/10/11
-- 网络连接（用于在线OCR）
-- 2GB内存，100MB硬盘空间
-
-### 完整版
 - Python 3.8+
 - Windows/Linux/macOS
-- 网络连接
-- 4GB内存，500MB硬盘空间
+- 网络连接（访问金蝶云和OCR服务）
+- 2GB内存，50MB硬盘空间
 
 ## 🔧 常见问题
 
-### 依赖冲突
-- 打包版：使用精简依赖，避免冲突
-- 完整版：修复了langchain版本冲突
+### 连接失败
+- 检查金蝶云服务器地址是否正确
+- 确认账套ID、用户名、密码
+- 验证网络连通性
 
-### 编码问题
-- 使用英文文件名避免中文编码问题
-- 统一使用UTF-8编码
+### 保存失败
+- 检查必填字段是否完整
+- 确认供应商/客户编码存在
+- 验证物料编码存在于金蝶系统
 
-### 打包失败
-- 推荐使用打包版的简化方案
-- 避免复杂依赖导致的打包问题
+### OCR识别不准确
+- 使用清晰的图片
+- 确保文字方向正确
+- 可更换OCR服务
 
 ## 📞 技术支持
 
 - 🐛 问题反馈：提交Issue
-- 📖 详细文档：查看各版本README
-- 🔧 API指南：docs_and_guides/api_guide.py
+- 📖 详细文档：查看 KINGDEE_CLOUD_README.md
+- 🔧 API指南：docs_and_guides/
 - 💬 技术交流：欢迎讨论和建议
+
+## 📚 相关文档
+
+- [详细使用文档](KINGDEE_CLOUD_README.md)
+- [配置文件说明](.env.kingdee_cloud)
+- [API核心代码](kingdee_cloud_v7.py)
 
 ## 📄 许可证
 
-本项目采用MIT许可证，详见LICENSE文件。
+本项目采用MIT许可证。
